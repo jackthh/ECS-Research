@@ -3,7 +3,7 @@ using Unity.Entities;
 
 namespace _ECS_Research.Scripts
 {
-    public class MobMovementComponentData : IComponentData
+    public struct MobMovementComponentData : IComponentData
     {
         public float speed;
         public float maxY;

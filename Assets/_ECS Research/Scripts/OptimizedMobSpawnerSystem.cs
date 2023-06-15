@@ -83,13 +83,4 @@ namespace _ECS_Research.Scripts
                 (_rdm.NextFloat(_spawnBounds.x, _spawnBounds.y), _rdm.NextFloat(_heightBounds.x, _heightBounds.y), 0f);
         }
     }
-
-
-
-    [BurstCompile] public partial struct MovementJob : IJobEntity
-    {
-        private void Execute([ChunkIndexInQuery] int _chunkIndex)
-        {
-        }
-    }
 }
