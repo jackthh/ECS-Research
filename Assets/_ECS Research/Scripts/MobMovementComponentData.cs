@@ -8,5 +8,6 @@ namespace _ECS_Research.Scripts
         public float speed;
         public float maxY;
         public float minY;
+        public bool movingUp;
     }
 }

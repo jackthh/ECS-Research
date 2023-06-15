@@ -27,8 +27,8 @@ namespace _ECS_Research.Scripts
             {
                 elapsedTime = SystemAPI.Time.ElapsedTime,
                 ecb = ecb,
-                // seed = 10
-                rdm = rdm
+                seed = 10
+                // rdm = rdm
             }.ScheduleParallel();
         }
 
@@ -48,26 +48,31 @@ namespace _ECS_Research.Scripts
         public EntityCommandBuffer.ParallelWriter ecb;
         public double elapsedTime;
         public Unity.Mathematics.Random rdm;
-        // public int seed;
+        public int seed;
 
 
         // IJobEntity generates a component data query based on the parameters of its `Execute` method.
         // This example queries for all Spawner components and uses `ref` to specify that the operation
         // requires read and write access. Unity processes `Execute` for each entity that matches the
         // component data query.
-        private void Execute([ChunkIndexInQuery] int _chunkIndex, ref MobSpawnerComponentData _spawner)
+        private void Execute([EntityIndexInQuery] int _entityIndex, ref MobSpawnerComponentData _spawner)
         {
-            // seed++;
-            // rdm = new Unity.Mathematics.Random((uint) seed);
-
             // If the next spawn time has passed.
             if (_spawner.nextSpawnTime < elapsedTime)
             {
                 for (var i = 0; i < _spawner.amountPerWave; i++)
                 {
+                    seed++;
+                    rdm = new Unity.Mathematics.Random((uint) seed);
                     var instantiatePos = GetRandomPosition(rdm, _spawner.spawnBounds, _spawner.heightBounds);
-                    var newEntity = ecb.Instantiate(_chunkIndex, _spawner.prefab);
-                    ecb.SetComponent(_chunkIndex, newEntity, LocalTransform.FromPosition(instantiatePos));
+                    var newEntity = ecb.Instantiate(_entityIndex, _spawner.prefab);
+                    ecb.SetComponent(_entityIndex, newEntity, LocalTransform.FromPosition(instantiatePos));
+                    ecb.AddComponent(_entityIndex, newEntity, new MobMovementComponentData
+                    {
+                        speed = _spawner.movementSpeed,
+                        minY = _spawner.heightBounds.x,
+                        maxY = _spawner.heightBounds.y
+                    });
                 }
                 // ecb.SetComponent(_chunkIndex, newEntity, LocalTransform.FromPosition(0f, 0f, 0f));
 
