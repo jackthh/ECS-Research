@@ -13,5 +13,7 @@ namespace _ECS_Research.Scripts
         public float2 spawnBounds;
         public float movementSpeed;
         public float2 heightBounds;
+        public int spawnedMobs;
+        public int maxMobs;
     }
 }

@@ -13,7 +13,7 @@ namespace _ECS_Research.Scripts
             new Move
             {
                 deltaTime = SystemAPI.Time.DeltaTime
-            }.Schedule();
+            }.ScheduleParallel();
         }
     }
 

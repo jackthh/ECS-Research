@@ -31,7 +31,9 @@ namespace _ECS_Research.Scripts
                 amountPerWave = _authoring.amountPerWave,
                 spawnBounds = _authoring.spawnBounds,
                 movementSpeed = _authoring.movementSpeed,
-                heightBounds = _authoring.heightBounds
+                heightBounds = _authoring.heightBounds,
+                spawnedMobs = 0,
+                maxMobs = 10000
             });
             AddComponent(entity, new RandomnessGeneratorComponentData
             {
