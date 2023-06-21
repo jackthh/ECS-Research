@@ -21,7 +21,10 @@ namespace _ECS_Research.Scripts.Closest_Point_Seeker.Anchor_Points_Spawning
 
         #endregion
 
-
+		#region Jobs
+		
+		
+		#endregion
         #region Utils
 
         private EntityCommandBuffer.ParallelWriter GetEntityCommandBuffer(ref SystemState _state)
