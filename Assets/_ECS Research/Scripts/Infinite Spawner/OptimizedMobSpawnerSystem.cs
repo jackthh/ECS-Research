@@ -13,6 +13,7 @@ namespace _ECS_Research.Scripts
         public void OnCreate(ref SystemState _state)
         {
             _state.RequireForUpdate<BeginSimulationEntityCommandBufferSystem.Singleton>();
+            
         }
 
 
@@ -68,11 +69,11 @@ namespace _ECS_Research.Scripts
                     if (_spawner.spawnedMobs >= _spawner.maxMobs)
                     {
                         ecb.SetEnabled(_entityIndex, _e, false);
-                        
+
                         return;
                     }
 
-                    var instantiatePos = GetRandomPosition(ref rdm, _spawner.spawnBounds, _spawner.heightBounds);
+                    var instantiatePos = Utils.GetRandomPosition(ref rdm, _spawner.spawnBounds, _spawner.heightBounds);
                     var newEntity = ecb.Instantiate(_entityIndex, _spawner.prefab);
                     _spawner.spawnedMobs++;
                     ecb.SetComponent(_entityIndex, newEntity, LocalTransform.FromPosition(instantiatePos));
@@ -89,13 +90,6 @@ namespace _ECS_Research.Scripts
                 // Resets the next spawn time.
                 _spawner.nextSpawnTime = (float) elapsedTime + _spawner.spawnRate;
             }
-        }
-
-
-        private float3 GetRandomPosition(ref Unity.Mathematics.Random _rdm, float2 _spawnBounds, float2 _heightBounds)
-        {
-            return new float3
-                (_rdm.NextFloat(_spawnBounds.x, _spawnBounds.y), _rdm.NextFloat(_heightBounds.x, _heightBounds.y), 0f);
         }
     }
 }

@@ -35,10 +35,10 @@ namespace _ECS_Research.Scripts
                 spawnedMobs = 0,
                 maxMobs = 10000
             });
-            AddComponent(entity, new RandomnessGeneratorComponentData
-            {
-                value = new Unity.Mathematics.Random(1000)
-            });
+            // AddComponent(entity, new RandomnessGeneratorComponentData
+            // {
+            //     value = new Unity.Mathematics.Random(1000)
+            // });
         }
     }
 }
