@@ -167,6 +167,60 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bdfaa97e81b467f89c86903821f7120, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initPointsCount: 0
-  xSpawnBounds: {x: 0, y: 0}
-  ySpawnBounds: {x: 0, y: 0}
+  anchorPointPrefab: {fileID: 3172067936388459148, guid: ec1caef54a7d09141bcdfece89c0f0e2,
+    type: 3}
+  initSize: 500
+  xSpawnBounds: {x: -30, y: 30}
+  ySpawnBounds: {x: -20, y: 20}
+--- !u!1 &1415253620
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1415253621}
+  - component: {fileID: 1415253622}
+  m_Layer: 0
+  m_Name: Seekers Spawner Authoring
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1415253621
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1415253620}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: -45}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1415253622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1415253620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 509eec95da9d721478c0607edee249d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  seekerPrefab: {fileID: 3172067936388459148, guid: c896c0eddeb184548aa3549193385ee6,
+    type: 3}
+  interval: 3
+  amountPerWave: 50
+  xSpawnBounds: {x: -30, y: 30}
+  ySpawnBounds: {x: -20, y: 20}
+  seekerMovementSpeed: 5
+  seekerSearchingRadius: 5

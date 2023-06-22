@@ -59,7 +59,6 @@ namespace _ECS_Research.Scripts
         private void Execute([EntityIndexInQuery] int _entityIndex, Entity _e, ref MobSpawnerComponentData _spawner)
         {
             seed += _entityIndex;
-            // if(seed < )
             rdm = new Unity.Mathematics.Random((uint) seed);
             // If the next spawn time has passed.
             if (_spawner.nextSpawnTime < elapsedTime)
@@ -85,7 +84,6 @@ namespace _ECS_Research.Scripts
                         movingUp = true
                     });
                 }
-                // ecb.SetComponent(_chunkIndex, newEntity, LocalTransform.FromPosition(0f, 0f, 0f));
 
                 // Resets the next spawn time.
                 _spawner.nextSpawnTime = (float) elapsedTime + _spawner.spawnRate;

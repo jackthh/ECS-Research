@@ -1,4 +1,5 @@
-﻿using Unity.Collections;
+﻿using _ECS_Research.Scripts.Closest_Point_Seeker.Anchor_Points_Spawning;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Transforms;
 using UnityEngine;
@@ -27,9 +28,9 @@ namespace _ECS_Research.Scripts.Closest_Point_Seeker
                 initSize = _authoring.initSize,
                 xSpawnBounds = _authoring.xSpawnBounds,
                 ySpawnBounds = _authoring.ySpawnBounds,
-                assignedPointsPointer = 0,
-                anchorPoints = new NativeArray<LocalTransform>(_authoring.initSize, Allocator.Persistent)
             });
+
+            AddBuffer<AnchorPointBufferElement>(entity);
         }
     }
 }

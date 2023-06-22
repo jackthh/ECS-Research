@@ -7,3 +7,4 @@ namespace _ECS_Research.Scripts
         // public Unity.Mathematics.Random value;
     }
 }
+

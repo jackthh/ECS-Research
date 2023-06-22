@@ -5,9 +5,9 @@ namespace _ECS_Research.Scripts
 {
     public static class Utils
     {
-        public static float3 GetRandomPosition(ref Unity.Mathematics.Random _rdm, float2 _spawnBounds, float2 _heightBounds)
+        public static float3 GetRandomPosition(ref Unity.Mathematics.Random _rdm, float2 _xBounds, float2 _yBounds)
         {
-            return new float3(_rdm.NextFloat(_spawnBounds.x, _spawnBounds.y), _rdm.NextFloat(_heightBounds.x, _heightBounds.y), 0f);
+            return new float3(_rdm.NextFloat(_xBounds.x, _xBounds.y), _rdm.NextFloat(_yBounds.x, _yBounds.y), 0f);
         }
     }
 }
