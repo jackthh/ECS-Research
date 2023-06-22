@@ -1,10 +1,7 @@
-﻿using _ECS_Research.Scripts.Closest_Point_Seeker.Anchor_Points_Spawning;
-using Unity.Collections;
-using Unity.Entities;
-using Unity.Transforms;
+﻿using Unity.Entities;
 using UnityEngine;
 
-namespace _ECS_Research.Scripts.Closest_Point_Seeker
+namespace _ECS_Research.Scripts.Closest_Point_Seeker.Anchor_Points_Spawning
 {
     public class AnchorPointsSpawnerAuthoring : MonoBehaviour
     {

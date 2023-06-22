@@ -2,17 +2,19 @@ using System;
 using System.Linq;
 using _ECS_Research.Scripts.Closest_Point_Seeker.Anchor_Points_Spawning;
 using Unity.Burst;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 using Unity.VisualScripting;
+using UnityEngine;
 
 
 namespace _ECS_Research.Scripts.Closest_Point_Seeker.Seekers_Spawning
 {
-    public partial struct SeekersSystem : ISystem
+    [UpdateAfter(typeof(SeekersSpawnerSystem))] public partial struct SeekersSystem : ISystem
     {
-        public DynamicBuffer<AnchorPointBufferElement> allAnchorPoints;
+        private BufferLookup<AnchorPointBufferElement> anchorElementBufferLookup;
 
 
         #region ISystem Callbacks
@@ -20,9 +22,7 @@ namespace _ECS_Research.Scripts.Closest_Point_Seeker.Seekers_Spawning
         [BurstCompile] public void OnCreate(ref SystemState _state)
         {
             _state.RequireForUpdate<BeginSimulationEntityCommandBufferSystem.Singleton>();
-
-            var anchorsSpawnerEntity = SystemAPI.GetSingletonEntity<AnchorPointSpawnerData>();
-            allAnchorPoints = SystemAPI.GetBuffer<AnchorPointBufferElement>(anchorsSpawnerEntity);
+            anchorElementBufferLookup = _state.GetBufferLookup<AnchorPointBufferElement>(true);
         }
 
 
@@ -30,12 +30,14 @@ namespace _ECS_Research.Scripts.Closest_Point_Seeker.Seekers_Spawning
         {
             _state.RequireForUpdate<BeginSimulationEntityCommandBufferSystem.Singleton>();
             var ecb = GetEntityCommandBuffer(ref _state);
+            anchorElementBufferLookup.Update(ref _state);
 
             new HandlerSeekersJob()
             {
                 ecb = ecb,
                 currentDeltaTime = SystemAPI.Time.DeltaTime,
-                allAnchorPoints = allAnchorPoints
+                anchorElementBufferLookup = anchorElementBufferLookup,
+                spawnerEntity = SystemAPI.GetSingletonEntity<AnchorPointSpawnerData>()
             }.ScheduleParallel();
         }
 
@@ -48,16 +50,18 @@ namespace _ECS_Research.Scripts.Closest_Point_Seeker.Seekers_Spawning
         {
             public EntityCommandBuffer.ParallelWriter ecb;
             public float currentDeltaTime;
-            public DynamicBuffer<AnchorPointBufferElement> allAnchorPoints;
+            [ReadOnly] public BufferLookup<AnchorPointBufferElement> anchorElementBufferLookup;
+            public Entity spawnerEntity;
 
 
-            private void Execute([EntityIndexInQuery] int _entityIndex, Entity _e, ref LocalTransform _localTransform, in SeekerConfigData _seekerConfigData,
+            private void Execute([EntityIndexInQuery] int _entityIndex, Entity _seekerEntity, ref LocalTransform _localTransform, in SeekerConfigData _seekerConfigData,
                 ref SeekerRuntimeData _seekerRuntimeData)
             {
                 //  NOTE:   Null target
                 if (_seekerRuntimeData.currentTarget.id == -100)
                 {
-                    AssignNewTarget(ref ecb, _entityIndex, _e, _seekerConfigData, ref _seekerRuntimeData, _localTransform.Position, allAnchorPoints);
+                    AssignNewTarget(ref ecb, _entityIndex, _seekerEntity, spawnerEntity, _seekerConfigData, ref _seekerRuntimeData, _localTransform.Position,
+                        anchorElementBufferLookup);
                 }
                 else
                 {
@@ -65,7 +69,9 @@ namespace _ECS_Research.Scripts.Closest_Point_Seeker.Seekers_Spawning
                     //  NOTE:   To check if entity reached its target
                     if (math.distance(_localTransform.Position, _seekerRuntimeData.currentTarget.position) <= step)
                     {
-                        AssignNewTarget(ref ecb, _entityIndex, _e, _seekerConfigData, ref _seekerRuntimeData, _localTransform.Position, allAnchorPoints);
+                        anchorElementBufferLookup[_seekerEntity].Add(_seekerRuntimeData.currentTarget);
+                        AssignNewTarget(ref ecb, _entityIndex, _seekerEntity, spawnerEntity, _seekerConfigData, ref _seekerRuntimeData, _localTransform.Position,
+                            anchorElementBufferLookup);
                     }
                     else
                     {
@@ -80,15 +86,16 @@ namespace _ECS_Research.Scripts.Closest_Point_Seeker.Seekers_Spawning
 
         #region Workers
 
-        private static void AssignNewTarget(ref EntityCommandBuffer.ParallelWriter _ecb, int _entityIndex, Entity _e, SeekerConfigData _seekerConfigData,
-            ref SeekerRuntimeData _seekerRuntimeData, float3 _seekerPos, DynamicBuffer<AnchorPointBufferElement> _allAnchorPoints)
+        private static void AssignNewTarget(ref EntityCommandBuffer.ParallelWriter _ecb, int _entityIndex, Entity _seekerEntity, Entity _spawnerEntity,
+            SeekerConfigData _seekerConfigData, ref SeekerRuntimeData _seekerRuntimeData, float3 _seekerPos,
+            BufferLookup<AnchorPointBufferElement> _anchorElementsBufferLookup)
         {
-            var newTarget = FindNewTarget(_seekerConfigData, ref _seekerRuntimeData, _seekerPos, _allAnchorPoints);
+            var newTarget = FindNewTarget(_seekerEntity, _spawnerEntity, _seekerConfigData, _seekerPos, _anchorElementsBufferLookup);
             //  NOTE:   To check if there's no target available
             if (newTarget.id == -100)
             {
                 //  NOTE:   To self destruct
-                _ecb.DestroyEntity(_entityIndex, _e);
+                _ecb.DestroyEntity(_entityIndex, _seekerEntity);
             }
             else
             {
@@ -98,8 +105,8 @@ namespace _ECS_Research.Scripts.Closest_Point_Seeker.Seekers_Spawning
         }
 
 
-        private static AnchorPointBufferElement FindNewTarget(SeekerConfigData _seekerConfigData, ref SeekerRuntimeData _seekerRuntimeData, float3 _seekerPos,
-            DynamicBuffer<AnchorPointBufferElement> _allAnchorPoints)
+        private static AnchorPointBufferElement FindNewTarget(Entity _seekerEntity, Entity _spawnerEntity, SeekerConfigData _seekerConfigData, float3 _seekerPos,
+            BufferLookup<AnchorPointBufferElement> _anchorElementBufferLookup)
         {
             //  NOTE:   Init 
             var result = new AnchorPointBufferElement
@@ -108,34 +115,38 @@ namespace _ECS_Research.Scripts.Closest_Point_Seeker.Seekers_Spawning
             };
 
             //  NOTE:   To find all anchors in searching radius
-            var processingAnchors = new DynamicBuffer<AnchorPointBufferElement>();
-            foreach (var anchor in _allAnchorPoints)
+            var processingAnchors = new NativeList<AnchorPointBufferElement>();
+            // var processingAnchors = new NativeList<int>();
+            var processingAnchorsPos = new NativeList<float3>();
+            foreach (var anchor in _anchorElementBufferLookup[_spawnerEntity])
             {
                 if (math.distance(_seekerPos, anchor.position) <= _seekerConfigData.searchingRadius)
                 {
                     processingAnchors.Add(anchor);
+                    //     processingAnchors.Add(anchor.id);
+                    //     processingAnchorsPos.Add(anchor.position);
                 }
             }
-            
+
             //  NOTE:   To validate the list
-            for (var i = processingAnchors.Length - 1; i >= 0; i--)
-            {
-                if (_seekerRuntimeData.reachedPoints.Contains(processingAnchors[i]))
-                {
-                    processingAnchors.RemoveAt(i);
-                }
-            }
-            
-            
-            //  NOTE:   To find the nearest validate anchor
-            var minDistance = 2 * _seekerConfigData.searchingRadius;
-            foreach (var anchor in processingAnchors)
-            {
-                if (math.distance(_seekerPos, anchor.position) < minDistance)
-                {
-                    result = anchor;
-                }
-            }
+            // for (var i = processingAnchors.Length - 1; i >= 0; i--)
+            // {
+            //     if (_anchorElementBufferLookup[_seekerEntity].Contains(processingAnchors[i]))
+            //     {
+            //         processingAnchors.RemoveAt(i);
+            //     }
+            // }
+            //
+            //
+            // //  NOTE:   To find the nearest validate anchor
+            // var minDistance = 2 * _seekerConfigData.searchingRadius;
+            // foreach (var anchor in processingAnchors)
+            // {
+            //     if (math.distance(_seekerPos, anchor.position) < minDistance)
+            //     {
+            //         result = anchor;
+            //     }
+            // }
 
             return result;
         }
