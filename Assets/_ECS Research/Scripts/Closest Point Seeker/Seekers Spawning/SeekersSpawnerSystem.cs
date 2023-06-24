@@ -4,6 +4,7 @@ using _ECS_Research.Scripts;
 using _ECS_Research.Scripts.Closest_Point_Seeker.Anchor_Points_Spawning;
 using _ECS_Research.Scripts.Closest_Point_Seeker.Seekers_Spawning;
 using Unity.Burst;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Transforms;
 using UnityEngine;
@@ -51,7 +52,7 @@ public partial struct SeekersSpawnerSystem : ISystem
             {
                 for (var i = 0; i < _spawnerData.amountPerWave; i++)
                 {
-                    var instantiatePos = Utils.GetRandomPosition(ref rdm, _spawnerData.xSpawnBounds, _spawnerData.ySpawnBounds);
+                    var instantiatePos = Utils.GetRandomPosition(ref rdm, _spawnerData.xSpawnBounds, _spawnerData.ySpawnBounds, -0.1f);
                     var newEntity = ecb.Instantiate(_entityIndex, _spawnerData.prefab);
 
                     ecb.SetComponent(_entityIndex, newEntity, LocalTransform.FromPosition(instantiatePos));
@@ -62,9 +63,10 @@ public partial struct SeekersSpawnerSystem : ISystem
                     });
                     ecb.AddComponent(_entityIndex, newEntity, new SeekerRuntimeData
                     {
-                        currentTarget = new AnchorPointBufferElement {id = -100},
-                        reachedPoints = new DynamicBuffer<AnchorPointBufferElement>()
+                        currentTarget = new AnchorPointData {id = -100},
                     });
+
+                    ecb.AddBuffer<AnchorPointDataElement>(_entityIndex, newEntity);
                 }
 
                 _spawnerData.nextSpawnTime = (float) elapsedTime + _spawnerData.interval;

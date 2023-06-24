@@ -218,9 +218,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   seekerPrefab: {fileID: 3172067936388459148, guid: c896c0eddeb184548aa3549193385ee6,
     type: 3}
-  interval: 3
+  interval: 1
   amountPerWave: 50
   xSpawnBounds: {x: -30, y: 30}
   ySpawnBounds: {x: -20, y: 20}
-  seekerMovementSpeed: 5
-  seekerSearchingRadius: 5
+  seekerMovementSpeed: 7
+  seekerSearchingRadius: 10

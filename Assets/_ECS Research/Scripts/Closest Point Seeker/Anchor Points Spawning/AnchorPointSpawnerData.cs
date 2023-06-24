@@ -10,4 +10,6 @@ namespace _ECS_Research.Scripts.Closest_Point_Seeker.Anchor_Points_Spawning
         public float2 xSpawnBounds;
         public float2 ySpawnBounds;
     }
+    
+    public struct SpawningAnchors : IComponentData{}
 }

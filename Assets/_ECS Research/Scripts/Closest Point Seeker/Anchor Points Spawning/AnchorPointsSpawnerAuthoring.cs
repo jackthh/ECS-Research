@@ -26,8 +26,7 @@ namespace _ECS_Research.Scripts.Closest_Point_Seeker.Anchor_Points_Spawning
                 xSpawnBounds = _authoring.xSpawnBounds,
                 ySpawnBounds = _authoring.ySpawnBounds,
             });
-
-            AddBuffer<AnchorPointBufferElement>(entity);
+            AddComponent(entity, new SpawningAnchors());
         }
     }
 }

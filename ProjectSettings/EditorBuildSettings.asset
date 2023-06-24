@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/_ECS Research/Scenes/Closest Point Seeker/Cloesest Seeker.unity
+    guid: 5c2190758a4fd5240873196ad6656d63
   m_configObjects: {}
