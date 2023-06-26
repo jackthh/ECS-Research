@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/_ECS Research/Scenes/Main Scene.unity
-    guid: 47c3af63dccf41046986915fcdbcf4eb
+    path: Assets/_ECS Research/Scenes/Closest Point Seeker/Cloesest Seeker.unity
+    guid: 5c2190758a4fd5240873196ad6656d63
   m_configObjects: {}
