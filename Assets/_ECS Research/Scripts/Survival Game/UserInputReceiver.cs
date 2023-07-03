@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 namespace _ECS_Research.Scripts.Survival_Game
 {
-    public class InputHanndler : MonoBehaviour
+    public class InputHandler : MonoBehaviour
     {
         public PlayerInput input;
 
@@ -16,9 +16,19 @@ namespace _ECS_Research.Scripts.Survival_Game
         }
 
 
+       
+
+
         public void Move(InputAction.CallbackContext _context)
         {
-            Debug.Log($"Received {_context.ReadValue<Vector2>()}" );
+            Debug.Log($"Received {_context.ReadValue<Vector2>().normalized}" );
+        }
+
+
+        public void TestTouch(InputAction.CallbackContext _context)
+        {
+            Debug.Log($"Received Phase: {_context.phase} \n" +
+                      $"Pos: {_context.ReadValue<Vector2>()}");
         }
     }
     
