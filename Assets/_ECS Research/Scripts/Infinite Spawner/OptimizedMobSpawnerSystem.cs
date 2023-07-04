@@ -1,4 +1,4 @@
-using Unity.Entities;
+/*using Unity.Entities;
 using Unity.Transforms;
 using Unity.Burst;
 using Unity.Mathematics;
@@ -90,4 +90,4 @@ namespace _ECS_Research.Scripts
             }
         }
     }
-}
+}*/

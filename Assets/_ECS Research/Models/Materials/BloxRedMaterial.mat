@@ -129,14 +129,14 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.7867647, g: 0.24875647, b: 0.24875647, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.7867647, g: 0.24875644, b: 0.24875644, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 0.99999994}
     - _EmissionColorUI: {r: 0, g: 0, b: 0, a: 1}
     - _EmissionColorWithMapUI: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 0.21568628, g: 0.21568628, b: 0.21568628, a: 1}
     - _SpecularColor: {r: 0.25490198, g: 0.25490198, b: 0.25490198, a: 1}
   m_BuildTextureStacks: []
---- !u!114 &3534834971271721125
+--- !u!114 &2935771673621958026
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
