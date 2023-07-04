@@ -1,12 +1,18 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using _ECS_Research.Scripts.Survival_Game.Misc;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class GlobalSetup : MonoBehaviour
+
+namespace _ECS_Research.Z_Testing
 {
-    private void Start()
+    public class GlobalSetup : MonoBehaviour
     {
-        Application.targetFrameRate = 120;
+        [BoxGroup("References"), SerializeField] private SOAssetsReg soAssetsReg;
+
+
+        private void Start()
+        {
+            Application.targetFrameRate = 120;
+        }
     }
 }
