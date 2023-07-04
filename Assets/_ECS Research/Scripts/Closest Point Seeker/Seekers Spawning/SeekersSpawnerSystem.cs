@@ -1,4 +1,4 @@
-using System.Collections;
+/*using System.Collections;
 using System.Collections.Generic;
 using _ECS_Research.Scripts;
 using _ECS_Research.Scripts.Closest_Point_Seeker.Anchor_Points_Spawning;
@@ -87,4 +87,4 @@ public partial struct SeekersSpawnerSystem : ISystem
     }
 
     #endregion
-}
+}*/

@@ -1,4 +1,4 @@
-using Unity.Burst;
+/*using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
@@ -46,4 +46,4 @@ namespace _ECS_Research.Scripts
                 : new float3(0f, -deltaTime * _movementComponent.speed, 0f);
         }
     }
-}
+*/

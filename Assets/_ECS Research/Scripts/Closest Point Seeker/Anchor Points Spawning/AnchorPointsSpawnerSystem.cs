@@ -1,4 +1,4 @@
-﻿using Unity.Burst;
+﻿/*using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
@@ -71,4 +71,4 @@ namespace _ECS_Research.Scripts.Closest_Point_Seeker.Anchor_Points_Spawning
 
         #endregion
     }
-}
+}*/
