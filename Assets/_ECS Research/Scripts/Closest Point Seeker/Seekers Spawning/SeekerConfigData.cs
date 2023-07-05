@@ -17,6 +17,5 @@ namespace _ECS_Research.Scripts.Closest_Point_Seeker.Seekers_Spawning
     public struct SeekerRuntimeData : IComponentData
     {
         public AnchorPointData currentTarget;
-        public int asdasdd;
     }
 }

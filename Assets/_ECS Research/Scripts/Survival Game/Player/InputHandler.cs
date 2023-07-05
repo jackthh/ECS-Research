@@ -1,11 +1,9 @@
-using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
-
-namespace _ECS_Research.Scripts.Survival_Game
+namespace _ECS_Research.Scripts.Survival_Game.Player
 {
     public class InputHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
     {
@@ -17,6 +15,7 @@ namespace _ECS_Research.Scripts.Survival_Game
         [BoxGroup("References"), SerializeField] private RectTransform joyStickHandle;
 
 
+        [BoxGroup("Status Properties"), ShowInInspector, ReadOnly] public bool GotTouch { get; private set; }
         [BoxGroup("Status Properties"), ShowInInspector, ReadOnly] public Vector2 CurrentDirection { get; private set; }
 
 
@@ -46,7 +45,7 @@ namespace _ECS_Research.Scripts.Survival_Game
 
         public void OnPointerDown(PointerEventData _eventData)
         {
-            Debug.Log("Pointer Down");
+            GotTouch = true;
             joyStickOutline.gameObject.SetActive(true);
 
             RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform) transform, _eventData.position, _eventData.pressEventCamera, out pointerDownPos);
@@ -56,9 +55,9 @@ namespace _ECS_Research.Scripts.Survival_Game
 
         public void OnPointerUp(PointerEventData _eventData)
         {
+            GotTouch = false;
             joyStickOutline.anchoredPosition = joyStickOriginalPos;
             joyStickHandle.anchoredPosition = Vector2.zero;
-            Debug.Log("Pointer Up");
         }
 
 
@@ -66,7 +65,7 @@ namespace _ECS_Research.Scripts.Survival_Game
         {
             RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform) transform, _eventData.position, _eventData.pressEventCamera, out pointerCurrentPos);
             var offset = pointerCurrentPos - pointerDownPos;
-            offset = Vector2.ClampMagnitude(offset, 100f);
+            offset = Vector2.ClampMagnitude(offset, 75f);
 
             joyStickHandle.anchoredPosition = offset;
             CurrentDirection = offset.normalized;

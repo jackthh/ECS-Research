@@ -1,13 +1,26 @@
 using System;
+using System.Collections.Generic;
+using _ECS_Research.Scripts.Survival_Game.General_Entities;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
 
 namespace _ECS_Research.Scripts.Survival_Game.Misc
 {
-    [Serializable] public class PlayerConfig
+    [Serializable] public struct PlayerConfig
     {
-        public float movementSpeed;
+        public float moveSpeed;
+        public Vector3 rotateSpeed;
+    }
+
+
+
+    [Serializable] public struct WaveConfig
+    {
+        public EntityIdentifierAuthoring mobPrefab;
+        public int quantity;
+        public float delayTimeSinceStart;
+        public Vector2 spawningOffsetRange;
     }
 
 
@@ -15,8 +28,8 @@ namespace _ECS_Research.Scripts.Survival_Game.Misc
     [CreateAssetMenu(menuName = "_L4D/Game Config")] public class GameConfig : ScriptableObject
     {
         [TabGroup("Player")] public PlayerConfig playerConfig;
-        
-        
-        [TabGroup("Temp")] public float asdsdplayerConfig;
+
+
+        [TabGroup("Spawning Config")] public List<WaveConfig> wavesConfig = new();
     }
 }
