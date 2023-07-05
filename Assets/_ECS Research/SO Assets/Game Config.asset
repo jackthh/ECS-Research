@@ -21,8 +21,11 @@ MonoBehaviour:
     quantity: 4
     delayTimeSinceStart: 3
     spawningOffsetRange: {x: 5, y: 10}
-  - mobPrefab: {fileID: 9156237677119983464, guid: a038b27437c2bd542a873174b476a41e,
+  - mobPrefab: {fileID: 9081172113666403312, guid: 21f6ddbdd4e642a4191363324a499adc,
       type: 3}
     quantity: 5
     delayTimeSinceStart: 5
     spawningOffsetRange: {x: 5, y: 10}
+  entitySamples:
+  - {fileID: 9156237677119983464, guid: a038b27437c2bd542a873174b476a41e, type: 3}
+  - {fileID: 9081172113666403312, guid: 21f6ddbdd4e642a4191363324a499adc, type: 3}

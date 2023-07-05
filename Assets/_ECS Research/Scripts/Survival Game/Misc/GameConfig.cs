@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using _ECS_Research.Scripts.Survival_Game.General_Entities;
 using Sirenix.OdinInspector;
+using UnityEditor;
 using UnityEngine;
 
 
@@ -30,6 +31,26 @@ namespace _ECS_Research.Scripts.Survival_Game.Misc
         [TabGroup("Player")] public PlayerConfig playerConfig;
 
 
+        [TabGroup("Spawning Config")] public float playgroundEdgeSize;
         [TabGroup("Spawning Config")] public List<WaveConfig> wavesConfig = new();
+
+
+        [TabGroup("Entity Samples"), OnCollectionChanged(nameof(AutoAssignSamplesId))] public List<EntityIdentifierAuthoring> entitySamples = new();
+
+
+        #region Editor Tools
+
+#if UNITY_EDITOR
+        public void AutoAssignSamplesId()
+        {
+            for (var i = 0; i < entitySamples.Count; i++)
+            {
+                entitySamples[i].id = i;
+                EditorUtility.SetDirty(entitySamples[i]);
+            }
+        }
+#endif
+
+        #endregion
     }
 }

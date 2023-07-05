@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using Unity.Entities;
 using UnityEngine;
 
@@ -5,7 +6,7 @@ namespace _ECS_Research.Scripts.Survival_Game.General_Entities
 {
     public class EntityIdentifierAuthoring : MonoBehaviour
     {
-        public int id;
+        [Tooltip("Change id using GameConfig SO Asset"), ReadOnly] public int id;
     }
 
 

@@ -16,6 +16,14 @@ namespace _ECS_Research.Scripts.Survival_Game.General_Entities
 
 
 
+    public struct EntitySampleElementData : IBufferElementData
+    {
+        public int entityId;
+        public Entity entitySanmple;
+    }
+
+
+
     public class GameConfigAuthoring : MonoBehaviour
     {
     }
@@ -27,6 +35,20 @@ namespace _ECS_Research.Scripts.Survival_Game.General_Entities
         public override void Bake(GameConfigAuthoring _authoring)
         {
             var entity = GetEntity(TransformUsageFlags.None);
+
+            //  NOTE:   Prefab samples data
+            var newEntityBuffer = AddBuffer<EntitySampleElementData>(entity);
+            foreach (var entitySample in SOAssetsReg.Instance.gameConfig.entitySamples)
+            {
+                newEntityBuffer.Add(new EntitySampleElementData
+                {
+                    entityId = entitySample.id,
+                    entitySanmple = GetEntity(entitySample.gameObject, TransformUsageFlags.None)
+                });
+            }
+
+
+            //  NOTE:   Waves config data
             var newConfigBuffer = AddBuffer<WaveConfigElementData>(entity);
             foreach (var waveConfig in SOAssetsReg.Instance.gameConfig.wavesConfig)
             {
