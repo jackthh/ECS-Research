@@ -6,6 +6,7 @@ namespace _ECS_Research.Scripts.Survival_Game.Mobs
     public struct MobStats : IComponentData
     {
         public float movementSpeed;
+        public int attackDmg;
         public float attackTime;
         public float attackInterval;
         public float attackRange;
@@ -18,12 +19,14 @@ namespace _ECS_Research.Scripts.Survival_Game.Mobs
         public int hp;
         public bool chasing;
         public float currentAttackTime;
+        public double nextAttackCDTime;
     }
 
 
     public class MobAuthoring : MonoBehaviour
     {
         public int hp;
+        public int attackDmg;
         public float movementSpeed;
         public float attackTime;
         public float attackInterval;
@@ -40,6 +43,7 @@ namespace _ECS_Research.Scripts.Survival_Game.Mobs
             AddComponent(entity, new MobStats
             {
                 movementSpeed = _authoring.movementSpeed,
+                attackDmg = _authoring.attackDmg,
                 attackTime = _authoring.attackTime,
                 attackInterval = _authoring.attackInterval,
                 attackRange =  _authoring.attackRange

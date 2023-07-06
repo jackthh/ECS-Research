@@ -88,7 +88,7 @@ namespace _ECS_Research.Scripts.Survival_Game.Mobs
                         _mobsSpawnerData.playgroundEdgeSize);
                     // var instantiatePos = float3.zero;
                     var newEntity = ecb.Instantiate(_entityIndex, mobSample);
-                    ecb.SetComponent(_entityIndex, newEntity, LocalTransform.FromPosition(instantiatePos));
+                    ecb.SetComponent(_entityIndex, newEntity, LocalTransform.FromPosition(instantiatePos).Rotate(quaternion.identity));
                 }
 
                 _mobsSpawnerData.spawning = false;
