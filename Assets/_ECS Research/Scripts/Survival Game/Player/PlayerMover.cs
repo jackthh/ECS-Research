@@ -9,7 +9,7 @@ namespace _ECS_Research.Scripts.Survival_Game.Player
 {
     public class PlayerMover : MonoBehaviour
     {
-        [BoxGroup("Singleton"), ShowInInspector, ReadOnly] public PlayerMover Instance { get; private set; }
+        [BoxGroup("Singleton"), ShowInInspector, ReadOnly] public static PlayerMover Instance { get; private set; }
 
 
         [BoxGroup("References")] private Rigidbody selfRb;

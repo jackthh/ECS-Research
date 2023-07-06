@@ -6,7 +6,8 @@ namespace _ECS_Research.Scripts.Survival_Game.Mobs
 {
     public struct MobsSpawnerData : IComponentData
     {
-        public int spawnedWaveId;
+        public bool spawning;
+        public int lastSpawnedWaveId;
         public float playgroundEdgeSize;
     }
 
@@ -26,7 +27,8 @@ namespace _ECS_Research.Scripts.Survival_Game.Mobs
 
             AddComponent(entity, new MobsSpawnerData
             {
-                spawnedWaveId = -1,
+                spawning = false,
+                lastSpawnedWaveId = -1,
                 playgroundEdgeSize = SOAssetsReg.Instance.gameConfig.playgroundEdgeSize
             });
         }

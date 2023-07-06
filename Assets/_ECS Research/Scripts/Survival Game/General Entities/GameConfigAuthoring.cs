@@ -19,7 +19,7 @@ namespace _ECS_Research.Scripts.Survival_Game.General_Entities
     public struct EntitySampleElementData : IBufferElementData
     {
         public int entityId;
-        public Entity entitySanmple;
+        public Entity entitySample;
     }
 
 
@@ -43,7 +43,7 @@ namespace _ECS_Research.Scripts.Survival_Game.General_Entities
                 newEntityBuffer.Add(new EntitySampleElementData
                 {
                     entityId = entitySample.id,
-                    entitySanmple = GetEntity(entitySample.gameObject, TransformUsageFlags.None)
+                    entitySample = GetEntity(entitySample.gameObject, TransformUsageFlags.None)
                 });
             }
 
