@@ -25,6 +25,7 @@ namespace _ECS_Research.Scripts.Survival_Game.Mobs
             var ecb = GetEntityCommandBuffer(ref _state);
             var gameConfig = SystemAPI.GetSingletonBuffer<WaveConfigElementData>(true);
             var entitySamples = SystemAPI.GetSingletonBuffer<EntitySampleElementData>(true);
+            var playerPos = SystemAPI.GetSingleton<MainWorldPlayerData>();
 
             new SpawnMobsJob
             {
@@ -33,7 +34,7 @@ namespace _ECS_Research.Scripts.Survival_Game.Mobs
                 entitySamples = entitySamples,
                 seed = Random.Range(1, 100),
                 elapsedTime = SystemAPI.Time.ElapsedTime,
-                playerPos = PlayerMover.Instance.transform.position
+                playerPos = playerPos.playerPos
             }.ScheduleParallel();
         }
 
@@ -54,19 +55,20 @@ namespace _ECS_Research.Scripts.Survival_Game.Mobs
             private void Execute([EntityIndexInQuery] int _entityIndex, ref MobsSpawnerData _mobsSpawnerData)
             {
                 //  NOTE:   To verify spawning conditions
+                if (_mobsSpawnerData.spawning)
+                    return;
+                
                 var spawningWave = _mobsSpawnerData.lastSpawnedWaveId + 1;
                 if (spawningWave >= wavesConfig.Length)
-                {
                     return;
-                }
-
+                
                 if (elapsedTime < wavesConfig[spawningWave].delayTimeSinceStart)
-                {
                     return;
-                }
-
+                
+                _mobsSpawnerData.spawning = true;
+                
                 //  NOTE:   Spawning progress
-                rdm = new Unity.Mathematics.Random((uint) seed);
+                //  NOTE:   To find expected entity sample to spawn
                 Entity mobSample = default;
                 foreach (var entitySample in entitySamples)
                 {
@@ -76,14 +78,20 @@ namespace _ECS_Research.Scripts.Survival_Game.Mobs
                         break;
                     }
                 }
-
-                for (var i = 0; i < wavesConfig[spawningWave].quantity; i++)
-                {
-                    var instantiatePos = Utils.GetRandPosWithConditions(ref rdm, wavesConfig[spawningWave].spawningOffsetRange, 0f, playerPos.xz,
-                        _mobsSpawnerData.playgroundEdgeSize);
-                    var newEntity = ecb.Instantiate(_entityIndex, mobSample);
-                    ecb.SetComponent(_entityIndex, newEntity, LocalTransform.FromPosition(instantiatePos));
-                }
+                
+                //  NOTE:   To spawn new entities at random pos
+                rdm = new Unity.Mathematics.Random((uint) seed);
+                // for (var i = 0; i < wavesConfig[spawningWave].quantity; i++)
+                // {
+                var instantiatePos = Utils.GetRandPosWithConditions(ref rdm, wavesConfig[spawningWave].spawningOffsetRange, 0f, playerPos.xz,
+                    _mobsSpawnerData.playgroundEdgeSize);
+                // var instantiatePos = float3.zero;
+                var newEntity = ecb.Instantiate(_entityIndex, mobSample);
+                ecb.SetComponent(_entityIndex, newEntity, LocalTransform.FromPosition(instantiatePos));
+                // }
+                
+                _mobsSpawnerData.spawning = false;
+                _mobsSpawnerData.lastSpawnedWaveId = spawningWave;
             }
         }
 
