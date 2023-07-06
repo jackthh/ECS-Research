@@ -24,6 +24,16 @@ namespace _ECS_Research.Scripts.Survival_Game.General_Entities
 
 
 
+    public struct PlayerConfigStats : IComponentData
+    {
+        public int piercerBulletDmg;
+        public float piercerBulletFireRate;
+        public int ricochetBulletDmg;
+        public float ricochetBulletFireRate;
+    }
+
+
+
     public class GameConfigAuthoring : MonoBehaviour
     {
     }
@@ -60,6 +70,15 @@ namespace _ECS_Research.Scripts.Survival_Game.General_Entities
                     delayTimeSinceStart = waveConfig.delayTimeSinceStart
                 });
             }
+
+            //  NOTE:   To load player config stats from SO file
+            AddComponent(entity, new PlayerConfigStats
+            {
+                piercerBulletDmg = SOAssetsReg.Instance.gameConfig.playerConfig.piercerBulletDmg,
+                piercerBulletFireRate = SOAssetsReg.Instance.gameConfig.playerConfig.piercerBulletFireRate,
+                ricochetBulletDmg = SOAssetsReg.Instance.gameConfig.playerConfig.ricochetBulletDmg,
+                ricochetBulletFireRate = SOAssetsReg.Instance.gameConfig.playerConfig.ricochetBulletFireRate,
+            });
         }
     }
 }

@@ -16,7 +16,7 @@ namespace _ECS_Research.Scripts.Survival_Game.Mobs
 
         [BurstCompile] public void OnCreate(ref SystemState _state)
         {
-            _state.RequireForUpdate<MainWorldPlayerData>();
+            _state.RequireForUpdate<MainScenePlayerRuntimeData>();
             _state.RequireForUpdate<BeginSimulationEntityCommandBufferSystem.Singleton>();
         }
 
@@ -26,7 +26,7 @@ namespace _ECS_Research.Scripts.Survival_Game.Mobs
             var ecb = GetEntityCommandBuffer(ref _state);
             var gameConfig = SystemAPI.GetSingletonBuffer<WaveConfigElementData>(true);
             var entitySamples = SystemAPI.GetSingletonBuffer<EntitySampleElementData>(true);
-            var playerPos = SystemAPI.GetSingleton<MainWorldPlayerData>();
+            var playerPos = SystemAPI.GetSingleton<MainScenePlayerRuntimeData>();
 
             new SpawnMobsJob
             {

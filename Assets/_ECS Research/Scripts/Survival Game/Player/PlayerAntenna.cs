@@ -14,14 +14,17 @@ namespace _ECS_Research.Scripts.Survival_Game.Player
 
         private void Start()
         {
-            componentDataQuery = new EntityQueryBuilder(Allocator.Temp).WithAll<MainWorldPlayerData>().Build(World.DefaultGameObjectInjectionWorld.EntityManager);
+            componentDataQuery = new EntityQueryBuilder(Allocator.Temp).WithAll<MainScenePlayerRuntimeData>().Build(World.DefaultGameObjectInjectionWorld.EntityManager);
         }
 
 
         private void Update()
         {
+            //  NOTE:   To sync player pos
             World.DefaultGameObjectInjectionWorld.EntityManager.SetComponentData(componentDataQuery.GetSingletonEntity(),
-                new MainWorldPlayerData {playerPos = transform.position});
+                new MainScenePlayerRuntimeData {playerPos = transform.position});
+            
+            //  NOTE:   To check 
         }
     }
 }

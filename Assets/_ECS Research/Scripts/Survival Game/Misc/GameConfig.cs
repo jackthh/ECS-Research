@@ -10,8 +10,14 @@ namespace _ECS_Research.Scripts.Survival_Game.Misc
 {
     [Serializable] public struct PlayerConfig
     {
+        public int hp;
         public float moveSpeed;
         public Vector3 rotateSpeed;
+
+        public int piercerBulletDmg;
+        public float piercerBulletFireRate;
+        public int ricochetBulletDmg;
+        public float ricochetBulletFireRate;
     }
 
 
