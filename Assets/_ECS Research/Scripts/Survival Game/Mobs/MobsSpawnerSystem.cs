@@ -16,6 +16,7 @@ namespace _ECS_Research.Scripts.Survival_Game.Mobs
 
         [BurstCompile] public void OnCreate(ref SystemState _state)
         {
+            _state.RequireForUpdate<MainWorldPlayerData>();
             _state.RequireForUpdate<BeginSimulationEntityCommandBufferSystem.Singleton>();
         }
 
@@ -57,16 +58,16 @@ namespace _ECS_Research.Scripts.Survival_Game.Mobs
                 //  NOTE:   To verify spawning conditions
                 if (_mobsSpawnerData.spawning)
                     return;
-                
+
                 var spawningWave = _mobsSpawnerData.lastSpawnedWaveId + 1;
                 if (spawningWave >= wavesConfig.Length)
                     return;
-                
+
                 if (elapsedTime < wavesConfig[spawningWave].delayTimeSinceStart)
                     return;
-                
+
                 _mobsSpawnerData.spawning = true;
-                
+
                 //  NOTE:   Spawning progress
                 //  NOTE:   To find expected entity sample to spawn
                 Entity mobSample = default;
@@ -78,18 +79,18 @@ namespace _ECS_Research.Scripts.Survival_Game.Mobs
                         break;
                     }
                 }
-                
+
                 //  NOTE:   To spawn new entities at random pos
                 rdm = new Unity.Mathematics.Random((uint) seed);
-                // for (var i = 0; i < wavesConfig[spawningWave].quantity; i++)
-                // {
-                var instantiatePos = Utils.GetRandPosWithConditions(ref rdm, wavesConfig[spawningWave].spawningOffsetRange, 0f, playerPos.xz,
-                    _mobsSpawnerData.playgroundEdgeSize);
-                // var instantiatePos = float3.zero;
-                var newEntity = ecb.Instantiate(_entityIndex, mobSample);
-                ecb.SetComponent(_entityIndex, newEntity, LocalTransform.FromPosition(instantiatePos));
-                // }
-                
+                for (var i = 0; i < wavesConfig[spawningWave].quantity; i++)
+                {
+                    var instantiatePos = Utils.GetRandPosWithConditions(ref rdm, wavesConfig[spawningWave].spawningOffsetRange, 0f, playerPos.xz,
+                        _mobsSpawnerData.playgroundEdgeSize);
+                    // var instantiatePos = float3.zero;
+                    var newEntity = ecb.Instantiate(_entityIndex, mobSample);
+                    ecb.SetComponent(_entityIndex, newEntity, LocalTransform.FromPosition(instantiatePos));
+                }
+
                 _mobsSpawnerData.spawning = false;
                 _mobsSpawnerData.lastSpawnedWaveId = spawningWave;
             }

@@ -24,10 +24,12 @@ namespace _ECS_Research.Scripts
             var expectedPos = _centerPos + rawRand;
 
             //  NOTE:   To assure that spawning point is within radius range from center point, but still on play ground
-            while (rawLength < _offsetRange.x || rawLength > _offsetRange.y ||
-                   math.abs(expectedPos.x) >= _edgeSize / 2f || math.abs(expectedPos.y) >= _edgeSize / 2f)
+            // math.abs(expectedPos.x) >= _edgeSize / 2f || math.abs(expectedPos.y) >= _edgeSize / 2f
+			
+            while (rawLength < _offsetRange.x || rawLength > _offsetRange.y)
             {
                 rawRand = _rdm.NextFloat2(-_offsetRange.y, _offsetRange.y);
+                rawLength = math.length(rawRand);
                 expectedPos = _centerPos + rawRand;
             }
 
