@@ -21,10 +21,11 @@ namespace _ECS_Research.Scripts.Survival_Game.Player
         private void Update()
         {
             //  NOTE:   To sync player pos
-            World.DefaultGameObjectInjectionWorld.EntityManager.SetComponentData(componentDataQuery.GetSingletonEntity(),
-                new MainScenePlayerRuntimeData {playerPos = transform.position});
+            var data = World.DefaultGameObjectInjectionWorld.EntityManager.GetComponentData<MainScenePlayerRuntimeData>(componentDataQuery.GetSingletonEntity());
+            data.playerPos = transform.position;
+            World.DefaultGameObjectInjectionWorld.EntityManager.SetComponentData(componentDataQuery.GetSingletonEntity(), data);
             
-            //  NOTE:   To check 
+            
         }
     }
 }

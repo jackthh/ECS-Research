@@ -13,9 +13,14 @@ MonoBehaviour:
   m_Name: Game Config
   m_EditorClassIdentifier: 
   playerConfig:
+    hp: 200
     moveSpeed: 7
     rotateSpeed: {x: 0, y: 180, z: 0}
-  playgroundEdgeSize: 0
+    piercerBulletDmg: 10
+    piercerBulletFireRate: 0.2
+    ricochetBulletDmg: 10
+    ricochetBulletFireRate: 0.2
+  playgroundEdgeSize: 50
   wavesConfig:
   - mobPrefab: {fileID: 9156237677119983464, guid: a038b27437c2bd542a873174b476a41e,
       type: 3}

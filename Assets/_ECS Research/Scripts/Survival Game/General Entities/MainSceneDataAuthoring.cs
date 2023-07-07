@@ -1,5 +1,4 @@
 using _ECS_Research.Scripts.Survival_Game.Misc;
-using _ECS_Research.Scripts.Survival_Game.Player;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
@@ -26,7 +25,6 @@ namespace _ECS_Research.Scripts.Survival_Game.General_Entities
         public override void Bake(MainSceneDataAuthoring _authoring)
         {
             var entity = GetEntity(TransformUsageFlags.None);
-
             AddComponent(entity, new MainScenePlayerRuntimeData
             {
                 playerHP = SOAssetsReg.Instance.gameConfig.playerConfig.hp,
